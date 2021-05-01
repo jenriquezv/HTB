@@ -1,3 +1,5 @@
+
+```console
 root@kali:~/HTB/BLUE# ping -c 4 10.10.10.40
 PING 10.10.10.40 (10.10.10.40) 56(84) bytes of data.
 64 bytes from 10.10.10.40: icmp_seq=1 ttl=127 time=140 ms
@@ -8,7 +10,7 @@ PING 10.10.10.40 (10.10.10.40) 56(84) bytes of data.
 --- 10.10.10.40 ping statistics ---
 4 packets transmitted, 4 received, 0% packet loss, time 3004ms
 rtt min/avg/max/mdev = 140.285/144.852/155.747/6.332 ms
-
+```
 
 
 
